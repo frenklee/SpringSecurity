@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:each="msg : ${list}">
+    <a th:href="@{/users/{id}(id=${msg.getId()})}" th:text="${msg.getId()}"></a>
+    <a th:text="${msg.getName()}"></a>
+    <a th:text="${msg.getAge()}"></a>
+    <a th:text="${msg.getWeight()}"></a>
+</div>
+<a th:href="@{/users/createForm}">create</a>
+</body>
+</html>
