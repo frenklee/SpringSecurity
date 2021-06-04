@@ -13,7 +13,7 @@ public class UsersController {
     @Autowired
     private UserServiceImp userService;
 
-    @GetMapping()
+    @GetMapping("/")
     public String getUsers(ModelMap model){
         model.addAttribute("list",userService.listUsers());
         return "allUsers";
