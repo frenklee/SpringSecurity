@@ -31,8 +31,6 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan("web")
-@EnableTransactionManagement
-@EnableJpaRepositories("web.config")
 public class JavaConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
@@ -66,61 +64,4 @@ public class JavaConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
-
-    @Bean
-    public DataSource getDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/db");
-        dataSource.setUsername("max");
-        dataSource.setPassword("max");
-        return dataSource;
-    }
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setDataSource(getDataSource());
-        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        factoryBean.setPackagesToScan("web");
-        factoryBean.setJpaProperties(getHibernateProperties());
-       // factoryBean.setPersistenceUnitName("myJpaPersistenceUnit");
-        return factoryBean;
-    }
-
-    private Properties getHibernateProperties() {
-        try {
-            Properties properties = new Properties();
-            InputStream is =  getClass().getClassLoader().getResourceAsStream("hibernate.properties");
-            properties.load(is);
-            return properties;
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Can`t find properties in classpath!");
-        }
-    }
-
-    @Bean
-    public EntityManager entityManager(){
-        EntityManager entityManager = getEntityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
-        return entityManager;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
-
-        return transactionManager;
-    }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate(){
-        return new JdbcTemplate(getDataSource());
-    }
-
 }
