@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,12 +22,17 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("web")
 @EnableTransactionManagement
+@EnableJpaRepositories("web.config")
 public class JavaConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
@@ -72,22 +78,37 @@ public class JavaConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(getDataSource());
-        factoryBean.setJpaVendorAdapter(getJpaVendorAdapter());
+        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         factoryBean.setPackagesToScan("web");
+        factoryBean.setJpaProperties(getHibernateProperties());
+       // factoryBean.setPersistenceUnitName("myJpaPersistenceUnit");
         return factoryBean;
     }
 
-    @Bean
-    public JpaVendorAdapter getJpaVendorAdapter() {
-        return new HibernateJpaVendorAdapter();
+    private Properties getHibernateProperties() {
+        try {
+            Properties properties = new Properties();
+            InputStream is =  getClass().getClassLoader().getResourceAsStream("hibernate.properties");
+            properties.load(is);
+            return properties;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Can`t find properties in classpath!");
+        }
     }
+
+    @Bean
+    public EntityManager entityManager(){
+        EntityManager entityManager = getEntityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
+        return entityManager;
+    }
+
     @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        transactionManager.setEntityManagerFactory(getEntityManagerFactory().getObject());
 
         return transactionManager;
     }

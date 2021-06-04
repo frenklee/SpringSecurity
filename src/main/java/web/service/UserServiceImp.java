@@ -9,6 +9,7 @@ import web.model.UserMapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ import java.util.List;
 
 @Component
 public class UserServiceImp implements UserService{
-    @Autowired
-    EntityManagerFactory entityManagerFactory;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
 
    /* private final JdbcTemplate jdbcTemplate;
@@ -49,10 +51,8 @@ public class UserServiceImp implements UserService{
 
     @Override
     public List<User> listUsers() {
-        EntityManager entityManager = null;
         List<User> result=null;
         try{
-            entityManager = entityManagerFactory.createEntityManager();
             result = entityManager.createQuery("SELECT e FROM User e",
                     User.class).getResultList();
 
@@ -89,11 +89,10 @@ public class UserServiceImp implements UserService{
 
     @Override
     public User getUser(int id) {
-        EntityManager entityManager = null;
+
         User user = null;
 
         try{
-            entityManager = entityManagerFactory.createEntityManager();
             user = (User)entityManager.find(User.class, id);
 
         }catch(Exception e){
@@ -108,10 +107,7 @@ public class UserServiceImp implements UserService{
 
     @Override
     public void updateUser(int id, User user) {
-        EntityManager entityManager = null;
-
         try {
-            entityManager= entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             entityManager.merge(user);
             entityManager.getTransaction().commit();
@@ -143,10 +139,7 @@ public class UserServiceImp implements UserService{
 
     @Override
     public void deleteUser(int id) {
-        EntityManager entityManager = null;
         try {
-
-            entityManager= entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             User user = (User)entityManager.find(User.class, id);
             entityManager.remove(user);
@@ -174,11 +167,8 @@ public class UserServiceImp implements UserService{
 
     @Override
     public void addUser(User user) {
-        EntityManager entityManager = null;
 
         try {
-
-            entityManager= entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             entityManager.persist(user);
             entityManager.getTransaction().commit();
