@@ -1,10 +1,12 @@
 package web.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,9 +33,18 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan("web")
+@EnableTransactionManagement
+@EnableJpaRepositories("web.config")
+@PropertySource(value = "classpath:db.properties")
 public class JavaConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
+    private Environment environment;
+
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 
     public JavaConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -63,5 +74,41 @@ public class JavaConfig implements WebMvcConfigurer {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+        return properties;
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
+        dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
+        dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
+        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+        return dataSource;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+        factoryBean.setDataSource(dataSource());
+        factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        factoryBean.setPackagesToScan("web");
+        factoryBean.setJpaProperties(hibernateProperties());
+        // factoryBean.setPersistenceUnitName("myJpaPersistenceUnit");
+        return factoryBean;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+
+        return transactionManager;
     }
 }
