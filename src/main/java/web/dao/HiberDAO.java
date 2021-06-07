@@ -14,8 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Component
-@Transactional(readOnly = true)
+@Repository
 public class HiberDAO implements UserDAO{
 
     @PersistenceContext(unitName = "entityManagerFactory")
@@ -23,13 +22,11 @@ public class HiberDAO implements UserDAO{
 
 
     @Override
-    @Transactional
     public void addUser(User user) {
         em.persist(user);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<User> listUsers() {
         return em.createQuery("SELECT p FROM User p", User.class).getResultList();
     }
