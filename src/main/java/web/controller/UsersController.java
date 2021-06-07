@@ -40,13 +40,7 @@ public class UsersController {
     }
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user){
-        User user1 = new User();
-        user1.setId(user.getId());
-        user1.setName(user.getName());
-        user1.setAge(user.getAge());
-        user1.setWeight(user.getWeight());
-        userService.addUser(user1);
-
+        userService.addUser(user);
         return "redirect:/users";
     }
     @GetMapping("/{id}/edit")

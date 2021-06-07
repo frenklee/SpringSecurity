@@ -3,7 +3,6 @@ package web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import web.dao.HiberDAO;
 import web.dao.UserDAO;
 import web.model.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +42,11 @@ public class UserServiceImp implements UserService{
     @Override
     @Transactional
     public void addUser(User user) {
-     userDAO.addUser(user);
+        User user1 = new User();
+        user1.setId(user.getId());
+        user1.setName(user.getName());
+        user1.setAge(user.getAge());
+        user1.setWeight(user.getWeight());
+        userDAO.addUser(user);
     }
 }
