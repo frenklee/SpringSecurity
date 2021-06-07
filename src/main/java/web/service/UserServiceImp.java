@@ -4,21 +4,21 @@ package web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import web.dao.UserDAO;
-import web.dao.UserDAOImp;
+import web.dao.HiberDAO;
+import web.dao.jdbcUserDAO;
 import web.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImp implements UserService{
 
     @Autowired
-    private UserDAO userDAO;
+    HiberDAO userDAO;
 
     @Override
-    @Transactional
     public List<User> listUsers() {
         return userDAO.listUsers();
     }
@@ -39,6 +39,7 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
      userDAO.addUser(user);
     }
