@@ -1,9 +1,5 @@
 package web.dao;
 
-
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +11,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class HiberDAO implements UserDAO{
-
+public class UserDAOImp implements UserDAO{
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
@@ -42,10 +37,7 @@ public class HiberDAO implements UserDAO{
 
     @Override
     public void updateUser(int id, User user) {
-        User user1 = getUser(id);
-        user1.setName(user.getName());
-        user1.setAge(user.getAge());
-        user1.setAge(user.getWeight());
+        em.merge(user);
     }
 
     @Override
