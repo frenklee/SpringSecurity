@@ -2,12 +2,9 @@ package web.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import web.dao.HiberDAO;
 import web.dao.UserDAO;
-import web.dao.jdbcUserDAO;
 import web.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +13,8 @@ import java.util.List;
 @Service
 public class UserServiceImp implements UserService{
 
-
-    UserDAO userDAO;
     @Autowired
-    public UserServiceImp(){
-        userDAO = new HiberDAO();
-    }
+    UserDAO userDAO;
 
     @Override
     @Transactional

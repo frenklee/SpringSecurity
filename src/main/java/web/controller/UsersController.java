@@ -14,7 +14,7 @@ import web.service.UserServiceImp;
 public class UsersController {
 
     @Autowired
-    UserServiceImp userService;
+    UserService userService;
 
     @GetMapping()
     public String getUsers(Model model){
@@ -39,14 +39,13 @@ public class UsersController {
         return "createUser";
     }
     @PostMapping()
-    public String createUser(@RequestParam("name") String name,
-                             @RequestParam("age") int age,
-                             @RequestParam("weight") int weight){
-        User user = new User();
-        user.setName(name);
-        user.setAge(age);
-        user.setWeight(weight);
-        userService.addUser(user);
+    public String createUser(@ModelAttribute("user") User user){
+        User user1 = new User();
+        user1.setId(user.getId());
+        user1.setName(user.getName());
+        user1.setAge(user.getAge());
+        user1.setWeight(user.getWeight());
+        userService.addUser(user1);
 
         return "redirect:/users";
     }
