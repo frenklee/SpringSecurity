@@ -1,10 +1,11 @@
 package web.service;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import web.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     public List<User> listUsers();
     public User getUser(int id);
     public void updateUser(int id, User user);

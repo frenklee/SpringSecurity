@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import web.config.LoginSuccessHandler;
+import web.service.UserService;
 import web.service.UserServiceImp;
 
 @Configuration
@@ -18,7 +19,7 @@ import web.service.UserServiceImp;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserServiceImp userService;
+    private UserService userService;
 
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
