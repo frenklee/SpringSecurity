@@ -7,13 +7,13 @@
 <body>
 <a th:text="${user.getId()}"></a>
 <a th:text="${user.getUsername()}"></a>
-<a th:text="${user.getPassword()}"></a>
 <a th:text="${user.getAge()}"></a>
 <a th:text="${user.getWeight()}"></a>
-<form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
-    <input type="submit" value="delete"/>
+<a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
+
+<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+    <input hidden type="submit" value="Sign Out"/>
 </form>
-<a th:href="@{/admin/{id}/edit(id=${user.getId()})}">update</a>
 
 </body>
 </html>

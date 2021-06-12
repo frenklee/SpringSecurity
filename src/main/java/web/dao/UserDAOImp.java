@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public class UserDAOImp implements UserDAO{
+
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
@@ -43,5 +44,11 @@ public class UserDAOImp implements UserDAO{
     @Override
     public void deleteUser(int id) {
         em.remove(getUser(id));
+    }
+
+    @Override
+    public User getUserByLogin(String name) {
+        return em.createQuery("select u from User u where u.name = :name", User.class)
+                .setParameter("name",name).getSingleResult();
     }
 }
