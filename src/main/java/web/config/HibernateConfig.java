@@ -50,7 +50,7 @@ public class HibernateConfig {
         entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactory.setPackagesToScan("web");
-        entityManagerFactory.afterPropertiesSet();
+
         return entityManagerFactory.getObject();
     }
 
