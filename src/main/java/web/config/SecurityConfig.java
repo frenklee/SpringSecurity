@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
+@Autowired
     private UserService userService;
 
     @Autowired
