@@ -27,9 +27,10 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-@Autowired
-    private UserService userService;
 
+    private UserService userService;
+    @Autowired
+    private UserDetailsService ud;
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -38,8 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.formLogin()
                 .loginPage("/login")
                 .successHandler(loginSuccessHandler)
@@ -61,10 +65,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
     }
 
-   /* @Autowired
+   /*@Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }*/
+       auth.inMemoryAuthentication()
+               .withUser("ADMIN")
+               .password("ADMIN")
+               .authorities("ROLE_ADMIN");
+        auth.userDetailsService(ud).passwordEncoder(passwordEncoder());
+    /*/
+
    @Bean
    public JdbcUserDetailsManager users(DataSource dataSource) {
        return new JdbcUserDetailsManager(dataSource);
@@ -72,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
+
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService((UserDetailsService) userService);

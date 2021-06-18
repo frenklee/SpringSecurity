@@ -5,11 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import web.model.Role;
 import web.model.User;
 import web.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -42,6 +44,9 @@ public class AdminController {
     }
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user){
+        Set<Role> roles = null;
+        roles.add(new Role(2,"ROLE_USER"));
+        user.setRoles(roles);
         userService.addUser(user);
         return "redirect:/admin";
     }

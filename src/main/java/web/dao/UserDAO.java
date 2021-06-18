@@ -12,4 +12,5 @@ public interface UserDAO {
     public void addUser(User user);
 
     public User findByUsername(String username);
+   // public void adminExist();
 }

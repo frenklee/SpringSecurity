@@ -84,4 +84,10 @@ public class UserServiceImp implements UserService, UserDetailsService {
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
     }
+
+   /* @Override
+    public void adminExist(){
+        userDAO.adminExist();
+    }*/
+
 }
