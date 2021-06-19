@@ -39,7 +39,7 @@ public class UserDAOImp implements UserDAO{
     }
 
     @Override
-    public void updateUser(int id, User user) {
+    public void updateUser(User user) {
         em.merge(user);
     }
 

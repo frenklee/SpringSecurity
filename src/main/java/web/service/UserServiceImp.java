@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import web.dao.RoleDAOImp;
@@ -52,7 +53,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void updateUser(int id, User user) {
-        userDAO.updateUser(id,user);
+        Set<Role> roles = new HashSet<>();
+        System.out.println(user.getUsername());
+        System.out.println(user.getName());
+        if(user.getId() == 1){
+            roles.add(roleDAO.getRoleById(1));
+        } else {
+            roles.add(roleDAO.getRoleById(2));
+        }
+        user.setRoles(roles);
+        userDAO.updateUser(user);
     }
 
     @Override
@@ -64,12 +74,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void addUser(User user) {
-        User user1 = new User();
-        user1.setId(user.getId());
-        user1.setName(user.getUsername());
-        user1.setAge(user.getAge());
-        user1.setWeight(user.getWeight());
-        user1.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode((user.getPassword())));
         Set<Role> roles = new HashSet<>();
         roles.add(roleDAO.getRoleById(2));
         user.setRoles(roles);
