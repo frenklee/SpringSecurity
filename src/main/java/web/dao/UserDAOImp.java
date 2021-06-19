@@ -52,20 +52,4 @@ public class UserDAOImp implements UserDAO{
         return em.createQuery("select u from User u where u.name = :name", User.class)
                 .setParameter("name",username).getSingleResult();
     }
-   /* @Override
-    public void adminExist(){
-        User user = new User();
-        Set<Role> roles = null;
-        roles.add(new Role(1,"ROLE_ADMIN"));
-        user.setId(1);
-        user.setAge(1);
-        user.setName("Admin");
-        user.setPassword("100");
-        user.setWeight(1);
-        user.setRoles(roles);
-        if(!em.contains(user)){
-            em.persist(user);
-        }
-    }*/
-
 }
