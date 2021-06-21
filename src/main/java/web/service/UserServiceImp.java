@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import web.dao.RoleDAO;
 import web.dao.RoleDAOImp;
 import web.dao.UserDAO;
+import web.dao.UserDAOImp;
 import web.model.Role;
 import web.model.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +29,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImp implements UserService, UserDetailsService {
 
-    @Autowired
     UserDAO userDAO;
-
-    @Autowired
-    RoleDAOImp roleDAO;
-
-    @Autowired
+    RoleDAO roleDAO;
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImp(UserDAO userDAO, RoleDAO roleDAO, PasswordEncoder passwordEncoder){
+        this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public UserServiceImp(){}
 

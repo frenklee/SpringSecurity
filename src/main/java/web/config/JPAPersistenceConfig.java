@@ -25,9 +25,15 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
 @ComponentScan(value = "web")
-public class HibernateConfig {
-    @Autowired
+public class JPAPersistenceConfig {
+
+
     private Environment env;
+
+    @Autowired
+    public JPAPersistenceConfig(Environment env){
+        this.env = env;
+    }
 
     @Bean
     public DataSource dataSource() {
@@ -49,6 +55,12 @@ public class HibernateConfig {
         entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactory.setPackagesToScan("web");
+        entityManagerFactory.setJpaProperties(additionalProperties());
+        entityManagerFactory.afterPropertiesSet();
+        return entityManagerFactory.getObject();
+    }
+
+    Properties additionalProperties() {
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
         jpaProperties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto")
@@ -56,9 +68,7 @@ public class HibernateConfig {
         jpaProperties.put("hibernate.show_sql",
                 env.getRequiredProperty("hibernate.show_sql")
         );
-        entityManagerFactory.setJpaProperties(jpaProperties);
-        entityManagerFactory.afterPropertiesSet();
-        return entityManagerFactory.getObject();
+        return jpaProperties;
     }
 
     @Bean

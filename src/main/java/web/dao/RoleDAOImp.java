@@ -8,11 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 @Repository
-public class RoleDAOImp {
+public class RoleDAOImp implements RoleDAO{
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
+    @Override
     public Role getRoleById(int id){
         TypedQuery<Role> q = em.createQuery(
                 "SELECT u FROM Role u WHERE u.id = :id",

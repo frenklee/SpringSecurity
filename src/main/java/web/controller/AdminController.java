@@ -17,8 +17,13 @@ import java.util.Set;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @Autowired
+
     private UserService userService;
+
+    @Autowired
+    public AdminController(UserService userService){
+        this.userService = userService;
+    }
 
     @GetMapping()
     public String getUsers(Model model){

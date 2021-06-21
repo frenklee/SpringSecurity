@@ -2,6 +2,7 @@ package web.config;
 
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import web.config.security.SecurityConfig;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,7 +13,7 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                JavaConfig.class, HibernateConfig.class, SecurityConfig.class
+                JavaConfig.class, JPAPersistenceConfig.class, SecurityConfig.class
         };
     }
 

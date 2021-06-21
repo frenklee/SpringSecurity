@@ -1,24 +1,20 @@
-package web.config;
+package web.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import web.config.LoginSuccessHandler;
+import web.config.handler.LoginSuccessHandler;
 import web.service.UserService;
-import web.service.UserServiceImp;
 
 import javax.sql.DataSource;
 
@@ -27,19 +23,14 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private UserService userService;
-    @Autowired
-    private UserDetailsService ud;
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
-
+    @Autowired
+    public SecurityConfig(UserService userService, LoginSuccessHandler loginSuccessHandler) {
+        this.userService = userService;
+        this.loginSuccessHandler = loginSuccessHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
