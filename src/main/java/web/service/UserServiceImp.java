@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImp implements UserService, UserDetailsService {
 
-    UserDAO userDAO;
-    RoleDAO roleDAO;
-    PasswordEncoder passwordEncoder;
+    private UserDAO userDAO;
+    private RoleDAO roleDAO;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImp(UserDAO userDAO, RoleDAO roleDAO, PasswordEncoder passwordEncoder){
