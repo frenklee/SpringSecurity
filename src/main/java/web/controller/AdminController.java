@@ -18,8 +18,7 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public AdminController(UserService userService){

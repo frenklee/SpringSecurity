@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import web.config.handler.LoginSuccessHandler;
+import web.service.UserDetailsServiceImp;
 import web.service.UserService;
 
 import javax.sql.DataSource;
@@ -23,11 +24,11 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
-    private LoginSuccessHandler loginSuccessHandler;
+    private final UserDetailsService userService;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     @Autowired
-    public SecurityConfig(UserService userService, LoginSuccessHandler loginSuccessHandler) {
+    public SecurityConfig(UserDetailsService userService, LoginSuccessHandler loginSuccessHandler) {
         this.userService = userService;
         this.loginSuccessHandler = loginSuccessHandler;
     }
@@ -71,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService((UserDetailsService) userService);
+        authenticationProvider.setUserDetailsService(userService);
         return authenticationProvider;
     }
     @Bean

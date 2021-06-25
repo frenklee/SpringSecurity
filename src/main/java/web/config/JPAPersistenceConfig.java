@@ -28,7 +28,7 @@ import java.util.Properties;
 public class JPAPersistenceConfig {
 
 
-    private Environment env;
+    private final Environment env;
 
     @Autowired
     public JPAPersistenceConfig(Environment env){
