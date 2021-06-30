@@ -2,29 +2,18 @@ package web.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import web.dao.RoleDAO;
-import web.dao.RoleDAOImp;
 import web.dao.UserDAO;
-import web.dao.UserDAOImp;
 import web.model.Role;
 import web.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Collection;
+import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -58,8 +47,6 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void updateUser(int id, User user) {
         Set<Role> roles = new HashSet<>();
-        System.out.println(user.getUsername());
-        System.out.println(user.getName());
         if(user.getId() == 1){
             roles.add(roleDAO.getRoleById(1));
         } else {

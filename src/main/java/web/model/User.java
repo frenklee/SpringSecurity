@@ -1,11 +1,20 @@
 package web.model;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+import web.dao.UserDAO;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,7 +23,7 @@ public class User implements UserDetails {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
@@ -37,13 +46,12 @@ public class User implements UserDetails {
 
     public User(){}
 
-    public User(int id, String name, int age, int weight, String password, Set<Role> roles) {
+    public User(int id, String name, int age, int weight, String password) {
         this.id=id;
         this.name = name;
         this.age = age;
         this.weight = weight;
         this.password = password;
-        this.roles = roles;
     }
 
     public String getName() {

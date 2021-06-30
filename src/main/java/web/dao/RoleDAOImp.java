@@ -22,4 +22,9 @@ public class RoleDAOImp implements RoleDAO{
         q.setParameter("id", id);
         return q.getResultList().stream().findAny().orElse(null);
     }
+
+    @Override
+    public void addRole(Role role){
+        em.persist(role);
+    }
 }
