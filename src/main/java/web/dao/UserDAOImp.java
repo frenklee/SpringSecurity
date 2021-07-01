@@ -27,7 +27,6 @@ public class UserDAOImp implements UserDAO{
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
-
     @Override
     public void addUser(User user) {
         em.persist(user);

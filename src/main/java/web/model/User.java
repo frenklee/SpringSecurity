@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -46,8 +46,8 @@ public class User implements UserDetails {
 
     public User(){}
 
-    public User(int id, String name, int age, int weight, String password) {
-        this.id=id;
+    public User(String name, int age, int weight, String password) {
+
         this.name = name;
         this.age = age;
         this.weight = weight;

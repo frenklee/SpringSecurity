@@ -5,11 +5,22 @@
     <title>Title</title>
 </head>
 <body>
-<a th:text="${user.getId()}"></a>
-<a th:text="${user.getUsername()}"></a>
-<a th:text="${user.getPassword()}"></a>
-<a th:text="${user.getAge()}"></a>
-<a th:text="${user.getWeight()}"></a>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>AGE</th>
+        <th>WEIGHT</th>
+        <th>PASSWORD</th>
+    </tr>
+    <tr>
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getAge()}"></td>
+        <td th:text="${user.getWeight()}"></td>
+        <td th:text="${user.getPassword()}"></td>
+    </tr>
+</table>
 <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
     <input type="submit" value="delete"/>
 </form>

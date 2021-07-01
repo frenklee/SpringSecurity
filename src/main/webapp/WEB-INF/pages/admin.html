@@ -5,12 +5,20 @@
   <title>Title</title>
 </head>
 <body>
-<div th:each="msg : ${list}">
-  <a th:href="@{/admin/{id}(id=${msg.getId()})}" th:text="${msg.getId()}"></a>
-  <a th:text="${msg.getUsername()}"></a>
-  <a th:text="${msg.getAge()}"></a>
-  <a th:text="${msg.getWeight()}"></a>
-</div>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>NAME</th>
+    <th>AGE</th>
+    <th>WEIGHT</th>
+  </tr>
+<tr th:each="msg : ${list}">
+  <td><a th:href="@{/admin/{id}(id=${msg.getId()})}" th:text="${msg.getId()}"></a></td>
+  <td th:text="${msg.getUsername()}"></td>
+  <td th:text="${msg.getAge()}"></td>
+  <td th:text="${msg.getWeight()}"></td>
+</tr>
+</table>
 <a th:href="@{/admin/createForm}">create</a>
 <a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
 

@@ -19,19 +19,23 @@ import web.service.UserServiceImp;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
 @Controller
 public class LoginController {
 
-    /*@Autowired
+    public static boolean mark = false;
+
+    @Autowired
     DBInit init;
 
     @PostConstruct
+    @Transactional
     public void init(){
         init.postConstruct();
-    }*/
+    }
     @GetMapping("/login")
     public String loginPage() {
         return "login";
