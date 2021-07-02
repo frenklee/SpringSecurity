@@ -12,6 +12,7 @@ public interface UserService{
     public void deleteUser(int id);
     public void addUser(User user);
     public User getUserByLogin(String name);
+    public void postConstruct();
     //public void adminExist();
 
 }

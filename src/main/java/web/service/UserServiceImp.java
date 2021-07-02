@@ -80,4 +80,24 @@ public class UserServiceImp implements UserService {
     public User findByUsername(String username) {
         return userDAO.findByUsername(username);
     }
+
+
+    @Override
+    @Transactional
+    public void postConstruct() {
+        if(userDAO.getUser(1)==null) {
+            User admin = new User("ADMIN", 1,
+                    1, passwordEncoder.encode("100"));
+            Role role1 = new Role("ROLE_ADMIN");
+            Role role2 = new Role("ROLE_USER");
+
+            Set<Role> roles = new HashSet<>();
+            roles.add(role1);
+            admin.setRoles(roles);
+
+            roleDAO.addRole(role1);
+            roleDAO.addRole(role2);
+            userDAO.addUser(admin);
+        }
+    }
 }

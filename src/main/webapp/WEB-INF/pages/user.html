@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
 <table>
@@ -21,10 +27,6 @@
         <td th:text="${user.getPassword()}"></td>
     </tr>
 </table>
-<form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
-    <input type="submit" value="delete"/>
-</form>
-<a th:href="@{/admin/{id}/edit(id=${user.getId()})}">update</a>
 
 </body>
 </html>
