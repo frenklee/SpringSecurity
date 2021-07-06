@@ -28,14 +28,20 @@
   <td><form th:method="DELETE" th:action="@{/admin/{id}(id=${msg.getId()})}">
     <input type="submit" value="Delete"/>
   </form></td>
-  <td><a th:href="@{/admin/{id}/edit(id=${msg.getId()})}">Update</a></td>
+  <td>
+    <form th:method="GET" th:action="@{/admin/{id}/edit(id=${msg.getId()})}">
+      <input type="submit" value="Update"/>
+    </form>
+  </td>
 </tr>
 </table>
-<a th:href="@{/admin/createForm}">create</a>
-<a href="javascript: document.logoutForm.submit()" role="menuitem"> Logout</a>
-
-<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
-  <input hidden type="submit" value="Sign Out"/>
+<form th:method="GET" th:action="@{/admin/createForm}">
+  <input type="submit" value="Create"/>
 </form>
+
+<form th:action="@{/logout}" th:method="POST">
+  <input type="submit" value="Logout"/>
+</form>
+
 </body>
 </html>

@@ -10,7 +10,6 @@ import web.model.Role;
 import web.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,20 +80,17 @@ public class UserServiceImp implements UserService {
         return userDAO.findByUsername(username);
     }
 
-
     @Override
     @Transactional
-    public void postConstruct() {
+    public void addInitData() {
         if(userDAO.getUser(1)==null) {
             User admin = new User("ADMIN", 1,
                     1, passwordEncoder.encode("100"));
             Role role1 = new Role("ROLE_ADMIN");
             Role role2 = new Role("ROLE_USER");
-
             Set<Role> roles = new HashSet<>();
             roles.add(role1);
             admin.setRoles(roles);
-
             roleDAO.addRole(role1);
             roleDAO.addRole(role2);
             userDAO.addUser(admin);

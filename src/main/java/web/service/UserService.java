@@ -1,6 +1,5 @@
 package web.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import web.model.User;
 
 import java.util.List;
@@ -12,7 +11,6 @@ public interface UserService{
     public void deleteUser(int id);
     public void addUser(User user);
     public User getUserByLogin(String name);
-    public void postConstruct();
-    //public void adminExist();
+    public void addInitData();
 
 }

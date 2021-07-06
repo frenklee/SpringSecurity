@@ -1,10 +1,7 @@
 package web.config;
 
-import org.hibernate.engine.spi.PersistenceContext;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import web.config.security.SecurityConfig;
-
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -19,7 +16,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         };
     }
 
-
     // Добавление конфигурации, в которой инициализируем ViewResolver, для корректного отображения jsp.
     @Override
     protected Class<?>[] getServletConfigClasses() {
@@ -27,7 +23,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
                 JavaConfig.class
         };
     }
-
 
     /* Данный метод указывает url, на котором будет базироваться приложение */
     @Override

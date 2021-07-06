@@ -1,30 +1,18 @@
 package web.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.stereotype.Repository;
-import org.hibernate.SessionFactory;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
-import web.model.Role;
-import web.model.User;
-import web.model.UserRepository;
 
-import javax.annotation.PostConstruct;
+import org.springframework.stereotype.Repository;
+import web.model.User;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserDAOImp implements UserDAO{
 
-    @PersistenceContext(unitName = "entityManagerFactory")
+    @PersistenceContext
     private EntityManager em;
 
     @Override
@@ -34,15 +22,13 @@ public class UserDAOImp implements UserDAO{
 
     @Override
     public List<User> listUsers() {
-        return em.createQuery("SELECT p FROM User p", User.class).getResultList();
+        return em.createQuery("SELECT p FROM User p", User.class)
+                .getResultList();
     }
 
     @Override
     public User getUser(int id) {
-        TypedQuery<User> q = em.createQuery(
-                "SELECT u FROM User u WHERE u.id = :id",
-                User.class
-        );
+        TypedQuery<User> q = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class);
         q.setParameter("id", id);
         return q.getResultList().stream().findAny().orElse(null);
     }
